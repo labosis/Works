@@ -138,15 +138,58 @@ public class Assignment3 {
 				System.out.println("Enter direction: Nort, South, East, West.");
 				String direction = takeDirection(in.nextLine());
 				ismove = possibleMove(coordinate, direction,boolboat,shipsize[i]);
-				System.out.println(ismove + " inner loop " + i);
+				if(ismove == true){
+					boolboat  = moveboat(coordinate,direction,boolboat, shipsize[i]);
+				}
+				else{
+					System.out.println("your move was not possible");
+				}
 			}
 			ismove = false;
-			System.out.println(i);
 		}
-		System.out.println(ismove + " outer loop " );
 		return boolboat;
 	}
 	
+	
+	
+	static boolean[][] moveboat(String Input, String Dir, boolean[][]booltest, int size){
+		String possibledirections = "nswe";
+		String cols ="abcdefghij";
+		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
+		String row = Input.substring(0,Input.indexOf(',')).trim();
+		int direction = possibledirections.indexOf(Dir.charAt(0));
+		int lettercolumns = cols.indexOf(col);//columns  [change in columns][change in rows]
+		int numberows = Integer.parseInt(row);//rows
+		int result;
+		switch(direction){
+		case 0:
+			result = numberows - size;
+			for(int changeinrows = numberows; changeinrows > result; changeinrows--){
+				booltest[lettercolumns][changeinrows] = true;
+			}
+			return booltest;
+		case 1:
+			result = numberows + size;
+			for(int changeinrows = numberows; changeinrows < result; changeinrows++){
+				booltest[lettercolumns][changeinrows] = true;
+			}
+			return booltest;
+		case 2:
+			result = lettercolumns - size;
+			for(int changeincolumns = lettercolumns; changeincolumns > result; changeincolumns--){
+				booltest[changeincolumns][numberows] = true;
+			}
+			return booltest;
+		case 3:
+			result = lettercolumns + size;
+			for(int changeincolumns = lettercolumns; changeincolumns < result; changeincolumns++){
+				booltest[changeincolumns][numberows] = true;
+			}
+			return booltest;
+		default: 
+			return booltest;
+	}
+	}
 	
 	
 	
@@ -211,13 +254,11 @@ public class Assignment3 {
 		switch(direction){
 			case 0:
 				result = numberows - size;
-				System.out.println(result + " " + numberows + " " + size);
 				if(result < -1){
 					return false; 
 				}
 				else{
 					for(int changeinrows = numberows; changeinrows > result; changeinrows--){
-						System.out.println(result);
 						if(booltest[lettercolumns][changeinrows] == true){
 							return false;
 						}
@@ -226,13 +267,11 @@ public class Assignment3 {
 				}
 			case 1:
 				result = numberows + size;
-				System.out.println(result + " " + numberows + " " + size);
 				if(result > 10){
 					return false; 
 				}
 				else{
 					for(int changeinrows = numberows; changeinrows < result; changeinrows++){
-						System.out.println(result);
 						if(booltest[lettercolumns][changeinrows] == true){
 							return false;
 						}
@@ -241,13 +280,11 @@ public class Assignment3 {
 				}
 			case 2:
 				result = lettercolumns - size;
-				System.out.println(result + " " + lettercolumns + " " + size);
 				if(result < -1){
 					return false; 
 				}
 				else{
 					for(int changeincolumns = lettercolumns; changeincolumns > result; changeincolumns--){
-						System.out.println(result);
 						if(booltest[changeincolumns][numberows] == true){
 							return false;
 						}
@@ -256,13 +293,11 @@ public class Assignment3 {
 				}
 			case 3:
 				result = lettercolumns + size;
-				System.out.println(result + " " + lettercolumns + " " + size);
 				if(result > 10){
 					return false; 
 				}
 				else{
 					for(int changeincolumns = lettercolumns; changeincolumns < result; changeincolumns++){
-						System.out.println(result);
 						if(booltest[changeincolumns][numberows] == true){
 							return false;
 						}
