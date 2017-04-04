@@ -131,7 +131,7 @@ public class Assignment3 {
 		int[] shipsize ={5,4,3,3,2};
 		String[] shipname = {"Aircraft","Battleship","Destroyer","submarine","patrol"};
 		boolean ismove = false;
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i <= 4; i++){
 			while(!ismove){
 				System.out.println("Enter coordinate for: " + shipname[i] +" " + shipsize[i]);
 				String coordinate = takeCoordinate(in.nextLine());
@@ -204,73 +204,73 @@ public class Assignment3 {
 		String cols ="abcdefghij";
 		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
 		String row = Input.substring(0,Input.indexOf(',')).trim();
-		char direction = Dir.charAt(0);
+		int direction = possibledirections.indexOf(Dir.charAt(0));
 		int lettercolumns = cols.indexOf(col);//columns  [change in columns][change in rows]
 		int numberows = Integer.parseInt(row);//rows
 		int result;
-		boolean isboat = true;
-		if(possibledirections.indexOf(direction) == 0){
-			result = numberows -size;
-			for(int changeinrows = numberows; changeinrows <= result; changeinrows--){
-				if(result < 0){
-					isboat = false;
-					System.out.println(changeinrows + " " + result);
-					break;
+		switch(direction){
+			case 0:
+				result = numberows - size;
+				System.out.println(result + " " + numberows + " " + size);
+				if(result < -1){
+					return false; 
 				}
-				if(booltest[lettercolumns][changeinrows] == true){
-					isboat = false;
-					break;
+				else{
+					for(int changeinrows = numberows; changeinrows > result; changeinrows--){
+						System.out.println(result);
+						if(booltest[lettercolumns][changeinrows] == true){
+							return false;
+						}
+					}
+					return true;
 				}
-				System.out.println(changeinrows);
-			}
+			case 1:
+				result = numberows + size;
+				System.out.println(result + " " + numberows + " " + size);
+				if(result > 10){
+					return false; 
+				}
+				else{
+					for(int changeinrows = numberows; changeinrows < result; changeinrows++){
+						System.out.println(result);
+						if(booltest[lettercolumns][changeinrows] == true){
+							return false;
+						}
+					}
+					return true;
+				}
+			case 2:
+				result = lettercolumns - size;
+				System.out.println(result + " " + lettercolumns + " " + size);
+				if(result < -1){
+					return false; 
+				}
+				else{
+					for(int changeincolumns = lettercolumns; changeincolumns > result; changeincolumns--){
+						System.out.println(result);
+						if(booltest[changeincolumns][numberows] == true){
+							return false;
+						}
+					}
+					return true;
+				}
+			case 3:
+				result = lettercolumns + size;
+				System.out.println(result + " " + lettercolumns + " " + size);
+				if(result > 10){
+					return false; 
+				}
+				else{
+					for(int changeincolumns = lettercolumns; changeincolumns < result; changeincolumns++){
+						System.out.println(result);
+						if(booltest[changeincolumns][numberows] == true){
+							return false;
+						}
+					}
+					return true;
+				}
+			default: 
+				return true;
 		}
-		if(possibledirections.indexOf(direction) == 1){
-			result = numberows + size;
-			for(int changeinrows = numberows; changeinrows <= result; changeinrows++){
-				if(result > 9){
-					isboat = false;
-					System.out.println(changeinrows +" " + result);
-					break;
-				}
-				if(booltest[lettercolumns][changeinrows] == true){
-					System.out.println(changeinrows);
-					isboat = false;
-					break;
-				}
-				System.out.println(changeinrows);
-			}
-		}
-		if(possibledirections.indexOf(direction) == 2){
-			result = lettercolumns - size;
-			for(int changeincolumns = lettercolumns; changeincolumns <= result; changeincolumns--){
-				if(result < 0){
-					isboat = false;
-					System.out.println(changeincolumns +" " + result);
-					break;
-				}
-				if(booltest[changeincolumns][numberows] == true){
-					isboat = false;
-					break;
-				}
-				System.out.println(changeincolumns);
-			}
-		}
-		if(possibledirections.indexOf(direction) == 3){
-			result = lettercolumns + size;
-			for(int changeincolumns = lettercolumns; changeincolumns <= result; changeincolumns++){
-				if(result < 0){
-					isboat = false;
-					System.out.println(changeincolumns + " " + result);
-					break;
-				}
-				if(booltest[changeincolumns][numberows] == true){
-					isboat = false;
-					break;
-				}
-				System.out.println(changeincolumns);
-			}
-		}
-
-		return isboat;
 	}
 }
