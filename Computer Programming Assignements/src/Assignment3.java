@@ -1,7 +1,3 @@
-//Victor Mari Rodriguez:  Nº2908722
-//Assigment 3 Computer Programming 
-//Sample game
-
 import java.util.Scanner;
 public class Assignment3 {
 
