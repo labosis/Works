@@ -8,9 +8,15 @@ public class Assignment3 {
 		char[][]    rightArray  = new char[10][10];
 		boolean[][] boatest     = new boolean[10][10];
 		boolean[][] boatest2    = new boolean[10][10];
-		leftArray = fillArray(leftArray);
+		char[][]	leftArray2  = new char[10][10];
+		char[][] 	centreArray2 = new char[10][10];
+		char[][]	rightArray2  = new char[10][10];
+		leftArray= fillArray(leftArray);
 		centreArray = fillArray(centreArray);
 		rightArray = fillArray(rightArray);
+		leftArray2 = fillArray(leftArray2);
+		centreArray2 = fillArray(centreArray2);
+		rightArray2 = fillArray(rightArray2);
 		PrintArrays(leftArray,centreArray,rightArray);
 		printmenu();
 		String input = in.nextLine();
@@ -36,15 +42,46 @@ public class Assignment3 {
 				}
 			}
 		}
-		else{
-			
+		rightArray = buildArray(rightArray,boatest);
+		rightArray2 = buildArray(rightArray2,boatest2);
+		boolean turns = true;
+		boolean loop = false;
+		while(!loop){
+			if(turns == true){
+				System.out.println("PLAYER 1:                 this is your board ");
+				PrintArrays(leftArray,centreArray,rightArray);
+				System.out.println("Enter a coordinate to shoot to the enemy");
+				takeCoordinate(in.nextLine());
+				turns = false;
+			}
+			else{
+				System.out.println("PLAYER 2:                  this is your board ");
+				PrintArrays(leftArray2,centreArray2,rightArray2);
+				System.out.println("Enter a coordinate to shoot to the enemy");
+				takeCoordinate(in.nextLine());
+				turns = true;
+			}
 		}
+		
 		
 	}
 	
 	
 	
-	static char[][] fillArray(char[][] chararray){
+	static char[][] buildArray(char[][]boatchar, boolean[][] boatbool){
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				if(boatbool[j][i] == true){
+					boatchar[j][i] = 'B';
+				}
+			}
+		}
+		return boatchar;
+	}
+	
+	
+	
+ 	static char[][] fillArray(char[][] chararray){
 		for(int i = 0; i < 10; i++){
 			for(int j = 0; j < 10; j++){
 				chararray[i][j] = '-';
@@ -70,17 +107,17 @@ public class Assignment3 {
 			System.out.print(i +" ");
 			int row = i;
 			for(int j = 0; j < 10; j++){
-				System.out.printf("%4c",left[i][j]);
+				System.out.printf("%4c",left[j][i]);
 				System.out.print(" ");
 			}
 			System.out.print("                       "+ row +" ");//spaces before charts
 			for(int j = 0; j < 10; j++){
-				System.out.printf("%4c",centre[i][j]);
+				System.out.printf("%4c",centre[j][i]);
 				System.out.print(" ");
 			}
 			System.out.print("                       "+ row +" ");//spaes before charts
 			for(int j = 0; j < 10; j++){
-				System.out.printf("%4c",right[i][j]);
+				System.out.printf("%4c",right[j][i]);
 				System.out.print(" ");
 			}
 			System.out.println("");
@@ -250,9 +287,9 @@ public class Assignment3 {
 		int direction = possibledirections.indexOf(Dir.charAt(0));
 		int lettercolumns = cols.indexOf(col);//columns  [change in columns][change in rows]
 		int numberows = Integer.parseInt(row);//rows
-		int result;
+		int result = 0;
 		switch(direction){
-			case 0:
+			case 0://check north route
 				result = numberows - size;
 				if(result < -1){
 					return false; 
@@ -265,7 +302,7 @@ public class Assignment3 {
 					}
 					return true;
 				}
-			case 1:
+			case 1://check south route
 				result = numberows + size;
 				if(result > 10){
 					return false; 
@@ -278,7 +315,7 @@ public class Assignment3 {
 					}
 					return true;
 				}
-			case 2:
+			case 2:// check west route
 				result = lettercolumns - size;
 				if(result < -1){
 					return false; 
@@ -291,7 +328,7 @@ public class Assignment3 {
 					}
 					return true;
 				}
-			case 3:
+			case 3://check east route
 				result = lettercolumns + size;
 				if(result > 10){
 					return false; 
@@ -305,7 +342,7 @@ public class Assignment3 {
 					return true;
 				}
 			default: 
-				return true;
+				return false;
 		}
 	}
 }
