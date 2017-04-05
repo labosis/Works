@@ -44,6 +44,7 @@ public class Assignment3 {
 		}
 		rightArray = buildArray(rightArray,boatest);
 		rightArray2 = buildArray(rightArray2,boatest2);
+		int deadboards = 0;
 		boolean turns = true;
 		boolean loop = false;
 		while(!loop){
@@ -51,20 +52,45 @@ public class Assignment3 {
 				System.out.println("PLAYER 1:                 this is your board ");
 				PrintArrays(leftArray,centreArray,rightArray);
 				System.out.println("Enter a coordinate to shoot to the enemy");
-				takeCoordinate(in.nextLine());
+				String launch = takeCoordinate(in.nextLine());
+				boolean test = checkboolarray(launch,boatest2);
+				if(test == true){
+					System.out.println("succes!  damaged enemy ship");
+				}
 				turns = false;
 			}
 			else{
-				System.out.println("PLAYER 2:                  this is your board ");
+				System.out.println("PLAYER 2:                 this is your board ");
 				PrintArrays(leftArray2,centreArray2,rightArray2);
 				System.out.println("Enter a coordinate to shoot to the enemy");
-				takeCoordinate(in.nextLine());
+				String launch = takeCoordinate(in.nextLine());
+				boolean test = checkboolarray(launch,boatest);
+				
 				turns = true;
+				
 			}
 		}
 		
 		
 	}
+	
+	
+	
+	
+	static boolean checkboolarray(String Input,boolean[][] checkarray){
+		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
+		String row = Input.substring(0,Input.indexOf(',')).trim();
+		String cols ="abcdefghij";
+		int lettercolumns = cols.indexOf(col);//columns  [change in columns][change in rows]
+		int numberows = Integer.parseInt(row);
+		if(checkarray[lettercolumns][numberows] == true){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	
 	
 	
