@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 public class Assignment3 {
 
 	public static void main(String[] args) {
@@ -26,7 +27,8 @@ public class Assignment3 {
 		}
 		boolean deployTurns = true;
 		if(Integer.parseInt(input) == 1){
-			
+			boatest  = randomdeploy(boatest);
+			boatest2 = randomdeploy(boatest2);
 		}
 		else if(Integer.parseInt(input) == 2){
 			for(int i = 0; i < 2; i++){
@@ -45,6 +47,7 @@ public class Assignment3 {
 		rightArray = buildArray(rightArray,boatest);
 		rightArray2 = buildArray(rightArray2,boatest2);
 		int deadboards = 0;
+		int deadboards2 =0;
 		boolean turns = true;
 		boolean loop = false;
 		while(!loop){
@@ -59,6 +62,7 @@ public class Assignment3 {
 					System.out.println("succes! you damaged a boat");
 					centreArray = makemove(launch,centreArray);
 					leftArray2 = pullinfohit(launch,leftArray2);
+					deadboards++;
 				}
 				else{
 					System.out.println("missed! you hit the water...");
@@ -77,6 +81,7 @@ public class Assignment3 {
 					System.out.println("succes! you damaged a boat");
 					centreArray2 = makemove(launch,centreArray2);
 					leftArray = pullinfohit(launch,leftArray);
+					deadboards2++;
 				}
 				else{
 					System.out.println("missed! you hit the water...");
@@ -86,6 +91,15 @@ public class Assignment3 {
 				turns = true;
 				
 			}
+			if(deadboards == 15 || deadboards2 == 15){
+				break;
+			}
+		}
+		if(turns == true){
+			System.out.println("Player 2 wins");
+		}
+		else{
+			System.out.println("Player 1 wins");
 		}
 		
 		
@@ -94,7 +108,92 @@ public class Assignment3 {
 
 	
 	
-static char[][]pullinfohit (String Input, char[][] array){
+	
+	
+	
+	
+	static boolean[][] randomdeploy (boolean [][] testArray){
+		Random r = new Random();
+		int[] shipsize ={5,4,3,3,2};
+		for(int i = 0; i <= 4; i++){
+			for(int length = shipsize[i]; length > 1; length--){
+				boolean movedone = false;
+				while (!movedone){
+					int randomrow = r.nextInt(9);
+					int randomcol = r.nextInt(9);
+					int randomdir = r.nextInt(3);
+					testrandomgueses(randomrow, randomcol, randomdir, shipsize[i],testArray);
+				}
+			}
+		}
+		return testArray;
+	}
+	
+	
+	
+	static boolean testrandomgueses(int row, int col, int dir, int size, boolean[][] booltest){
+		int result = 0;
+		switch(dir){
+		case 0://check north route
+			result = row - size;
+			if(result < -1){
+				return false; 
+			}
+			else{
+				for(int changeinrows = row; changeinrows > result; changeinrows--){
+					if(booltest[col][changeinrows] == true){
+						return false;
+					}
+				}
+				return true;
+			}
+		case 1://check south route
+			result = row + size;
+			if(result > 10){
+				return false; 
+			}
+			else{
+				for(int changeinrows = row; changeinrows < result; changeinrows++){
+					if(booltest[col][changeinrows] == true){
+						return false;
+					}
+				}
+				return true;
+			}
+		case 2:// check west route
+			result = col - size;
+			if(result < -1){
+				return false; 
+			}
+			else{
+				for(int changeincolumns = col; changeincolumns > result; changeincolumns--){
+					if(booltest[changeincolumns][row] == true){
+						return false;
+					}
+				}
+				return true;
+			}
+		case 3://check east route
+			result = col + size;
+			if(result > 10){
+				return false; 
+			}
+			else{
+				for(int changeincolumns = col; changeincolumns < result; changeincolumns++){
+					if(booltest[changeincolumns][row] == true){
+						return false;
+					}
+				}
+				return true;
+			}
+		default: 
+			return false;
+		}
+	}
+	
+	
+	
+	static char[][]pullinfohit (String Input, char[][] array){
 		
 		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
 		String row = Input.substring(0,Input.indexOf(',')).trim();
@@ -107,9 +206,7 @@ static char[][]pullinfohit (String Input, char[][] array){
 	
 	
 	
-	
-	
-static char[][]pullinfomiss (String Input, char[][] array){
+	static char[][]pullinfomiss (String Input, char[][] array){
 		
 		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
 		String row = Input.substring(0,Input.indexOf(',')).trim();
@@ -122,8 +219,7 @@ static char[][]pullinfomiss (String Input, char[][] array){
 	
 	
 	
-	
-static char[][]makemiss (String Input, char[][] array){
+  	static char[][]makemiss (String Input, char[][] array){
 		
 		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
 		String row = Input.substring(0,Input.indexOf(',')).trim();
@@ -133,7 +229,6 @@ static char[][]makemiss (String Input, char[][] array){
 		array[lettercolumns][numberows] = 'M';
 		return array;
 	}
-	
 	
 	
 	
@@ -150,7 +245,6 @@ static char[][]makemiss (String Input, char[][] array){
 	
 	
 	
-	
 	static boolean checkboolarray(String Input,boolean[][] checkarray){
 		String col = Input.substring(Input.indexOf(',')+1, Input.length()).trim().toLowerCase();
 		String row = Input.substring(0,Input.indexOf(',')).trim();
@@ -164,7 +258,6 @@ static char[][]makemiss (String Input, char[][] array){
 			return false;
 		}
 	}
-	
 	
 	
 	
@@ -355,7 +448,6 @@ static char[][]makemiss (String Input, char[][] array){
 	
 	
 	
-	
 	static String takeDirection(String Direction){
 		Scanner in = new Scanner(System.in);
 		String test = "nswe";
@@ -376,7 +468,6 @@ static char[][]makemiss (String Input, char[][] array){
 		return Direction.toLowerCase();
 	}
 
-	
 	
 	
  	static boolean possibleMove(String Input, String Dir, boolean[][] booltest,int size){
